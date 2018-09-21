@@ -7,7 +7,7 @@ networks:
 services:
   # proftpd container
   §§INSTANCE-proftpd:
-#    build: proftpd
+    build: proftpd
     image: quay.io/galaxy/proftpd:compose
     environment:
         - proftpd_db_connection=galaxy@db
@@ -85,7 +85,7 @@ services:
         #    Insert here your environment variables to change Galaxy's behaviour.
         #    For example to personalise Galaxy by changing the branding with
         #    - GALAXY_CONFIG_BRAND=FOO
-        - GALAXY_CONFIG_BRAND=BibboxBaseGalaxy
+        - GALAXY_CONFIG_BRAND=BaseGalaxy-ProFtp
         - NONUSE=proftp,postgres,slurmd,slurmctld
         - GALAXY_CONFIG_FTP_UPLOAD_DIR=/export/ftp
         - GALAXY_CONFIG_ALLOW_USER_DATASET_PURGE=True
