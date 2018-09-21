@@ -7,7 +7,7 @@ networks:
 services:
   # proftpd container
   §§INSTANCE-proftpd:
-    build: proftpd
+#    build: proftpd
     image: quay.io/galaxy/proftpd:compose
     environment:
         - proftpd_db_connection=galaxy@db
