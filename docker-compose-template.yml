@@ -87,6 +87,7 @@ services:
         #    For example to personalise Galaxy by changing the branding with
         #    - GALAXY_CONFIG_BRAND=FOO
         - NONUSE=proftp,postgres,slurmd,slurmctld
+        - GALAXY_CONFIG_BRAND=FooTemplate
         - GALAXY_CONFIG_FTP_UPLOAD_DIR=/export/ftp
         - GALAXY_CONFIG_ALLOW_USER_DATASET_PURGE=True
         - GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True
