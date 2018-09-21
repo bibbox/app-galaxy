@@ -3,7 +3,7 @@
     "id": "ENABLE_TTS_INSTALL",
     "display_name": "Enable Test Tool Shed",
     "type": "text",
-    "default_value": "False",
+    "default_value": "True",
     "description": "Should the Galaxy Test Tool Shed by enabled (set to True or False).",
     "min_length": "4",
     "max_length": "5"
