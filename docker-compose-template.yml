@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 networks:
     bibbox-default-network:
@@ -10,16 +10,17 @@ services:
 #    build: proftpd
     image: quay.io/galaxy/proftpd:compose
     environment:
-        - proftpd_db_connection=galaxy@db
+        - proftpd_db_connection=galaxy@galaxy-postgres
         - proftpd_db_username=galaxy
         - proftpd_db_password=chaopagoosaequuashie
-        - proftpd_files_dir=/export/ftp
+        - proftpd_files_dir=${EXPORT_DIR:-/export}/ftp/
         - proftpd_use_sftp=True
+        - proftpd_generate_ssh_key=False
         - proftpd_passive_port_low=30000
         - proftpd_passive_port_high=30010
     container_name: §§INSTANCE-galaxy-proftpd
     volumes:
-        - ./ftp_data:/export/ftp
+        - ${EXPORT_DIR:-/export}/:/export
     expose:
         - 21
         - 22
@@ -37,14 +38,14 @@ services:
         - "§§PORT38:30008"
         - "§§PORT39:30009"
         - "§§PORT310:30010"
-    links:
-        - §§INSTANCE-postgres:db
     restart: unless-stopped
     networks:
       - bibbox-default-network
     hostname: §§INSTANCE-galaxy-proftpd
+    depends_on:
+      -  $$INSTANCE-galaxy-postgres
 
-  §§INSTANCE-postgres:
+§§INSTANCE-galaxy-postgres:
 # Using the official postgres 
 # This needs to be populated by calling
 #  docker-compose run galaxy install_db.sh
@@ -59,13 +60,33 @@ services:
         - POSTGRES_USER=galaxy
         - POSTGRES_DB=galaxy
     volumes:
-        - ./postgres-storage:/var/lib/postgresql/data
+        - ${EXPORT_DIR:-/export}/postgres/:/var/lib/postgresql/data
     hostname: §§INSTANCE-galaxy-postgres
+    env_file: .env
+    depends_on:
+      - $$INSTANCE-galaxy-init
     restart: unless-stopped
     networks:
       - bibbox-default-network
 
   # slurm container
+    $$INSTANCE-galaxy-slurm:
+    # build: galaxy-slurm
+    image: quay.io/bgruening/galaxy-slurm:${TAG:-latest}
+    privileged: True
+    env_file: .env
+    #${PRIVILEGED_SLURM_CONTAINER:-False}
+    environment: {}
+    container_name: $$INSTANCE-galaxy-slurm
+    hostname: $$INSTANCE-galaxy-slurm
+    volumes:
+        - ${EXPORT_DIR:-/export}/:/export
+    restart: unless-stopped
+    networks:
+      - bibbox-default-network
+  
+  
+  
   §§INSTANCE-slurm:
 #    build: slurm-galaxy
     image: quay.io/bgruening/galaxy-slurm:18.05
@@ -105,7 +126,7 @@ services:
         - §§INSTANCE-slurm
     container_name: §§INSTANCE-galaxy
     volumes:
-        - ./ftp_data:/export/ftp
+       - ${EXPORT_DIR:-/export}/:/export/ftp
         # This is the directory where all your files from Galaxy will be stored
         # on your host system
         - ./galaxy-storage/:/export/
