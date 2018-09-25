@@ -1,119 +1,39 @@
-version: '2'
+version: '2.1'
 
 networks:
-    bibbox-default-network:
-      external: true
+	bibbox-default-network:
+	  external: true
 
 services:
-  # proftpd container
-  §§INSTANCE-proftpd:
-#    build: proftpd
-    image: quay.io/galaxy/proftpd:compose
-    environment:
-        - proftpd_db_connection=galaxy@db
-        - proftpd_db_username=galaxy
-        - proftpd_db_password=chaopagoosaequuashie
-        - proftpd_files_dir=/export/ftp
-        - proftpd_use_sftp=True
-        - proftpd_passive_port_low=30000
-        - proftpd_passive_port_high=30010
-    container_name: §§INSTANCE-galaxy-proftpd
-    volumes:
-        - ./ftp_data:/export/ftp
-    expose:
-        - 21
-        - 22
-    ports:
-        - "§§PORT1:21"
-        - "§§PORT2:22"
-        - "§§PORT30:30000"
-        - "§§PORT31:30001"
-        - "§§PORT32:30002"
-        - "§§PORT33:30003"
-        - "§§PORT34:30004"
-        - "§§PORT35:30005"
-        - "§§PORT36:30006"
-        - "§§PORT37:30007"
-        - "§§PORT38:30008"
-        - "§§PORT39:30009"
-        - "§§PORT310:30010"
-    links:
-        - §§INSTANCE-postgres:db
-    restart: unless-stopped
-    networks:
-      - bibbox-default-network
-    hostname: §§INSTANCE-galaxy-proftpd
 
-  §§INSTANCE-postgres:
-# Using the official postgres 
-# This needs to be populated by calling
-#  docker-compose run galaxy install_db.sh
-# on first run
-#    image: postgres
-# This comes with an initialization to quickly populate the database on first start
-#    build: postgres-galaxy
-    image: quay.io/bgruening/galaxy-postgres:18.05
-    container_name: §§INSTANCE-galaxy-postgres
-    environment:
-        - POSTGRES_PASSWORD=chaopagoosaequuashie
-        - POSTGRES_USER=galaxy
-        - POSTGRES_DB=galaxy
-    volumes:
-        - ./postgres-storage:/var/lib/postgresql/data
-    hostname: §§INSTANCE-galaxy-postgres
-    restart: unless-stopped
-    networks:
-      - bibbox-default-network
-
-  # slurm container
-  §§INSTANCE-slurm:
-#    build: slurm-galaxy
-    image: quay.io/bgruening/galaxy-slurm:18.05
-    environment: {}
-    container_name: §§INSTANCE-galaxy-slurm
-    volumes:
-        - ./galaxy-storage/:/export
-    restart: unless-stopped
-    networks:
-      - bibbox-default-network
-    hostname: §§INSTANCE-galaxy-slurm
-
-  # Main Galaxy container
   §§INSTANCE-galaxy:
-#    build: ../galaxy
-    image: quay.io/bgruening/galaxy:18.05
-    environment:
-        #    Insert here your environment variables to change Galaxy's behaviour.
-        #    For example to personalise Galaxy by changing the branding with
-        #    - GALAXY_CONFIG_BRAND=FOO
-        - NONUSE=proftp,postgres,slurmd,slurmctld
-        - GALAXY_CONFIG_BRAND=FooTemplate
-        - GALAXY_CONFIG_FTP_UPLOAD_DIR=/export/ftp
-        - GALAXY_CONFIG_ALLOW_USER_DATASET_PURGE=True
-        - GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True
-        - GALAXY_CONFIG_ENABLE_USER_DELETION=True
-        - GALAXY_CONFIG_ENABLE_BETA_WORKFLOW_MODULES=True
-        - GALAXY_CONFIG_DATABASE_CONNECTION=postgresql://galaxy:chaopagoosaequuashie@db/galaxy?client_encoding=utf8
-        - GALAXY_DEFAULT_ADMIN_USER=admin@galaxy.org
-        - GALAXY_DEFAULT_ADMIN_PASSWORD=admin
-        - GALAXY_DEFAULT_ADMIN_KEY=admin
-    ports:
-        - "§§PORT4:80" # nginx
-        - "§§PORT5:9002" # supervisor web-interface - not super useful in compose mode
-    links:
-        - §§INSTANCE-postgres:db
-        - §§INSTANCE-slurm
+    image: bgruening/galaxy-stable
     container_name: §§INSTANCE-galaxy
-    volumes:
-        - ./ftp_data:/export/ftp
-        # This is the directory where all your files from Galaxy will be stored
-        # on your host system
-        - ./galaxy-storage/:/export/
-    hostname: §§INSTANCE-galaxy
-    privileged: True
     restart: unless-stopped
     networks:
-      - bibbox-default-network
+	-bibbox-default-network
+    environment:
 
-volumes:
-  ftp_data: {}
+      GALAXY_CONFIG_ADMIN_USERS: §§ADMIN_USERS
+      GALAXY_CONFIG_MASTER_API_KEY: §§API_KEY
+      GALAXY_CONFIG_BRAND: §§MY_GALAXY
+
+
+    ports:
+      - "§§PORT1:80" 
+      - "§§PORT2:21" 
+      - "§§PORT3:22"
+
+    volumes_from: 
+      - §§INSTANCE-galaxy-store
+
+    depends_on:
+      - §§INSTANCE-galaxy-store
+
+ 
+  §§INSTANCE-galaxy-store:
+    image: bgruening/galaxy-stable
+    container_name: §§INSTANCE-galaxy-store
+    volumes:
+      - ./data/export:/export/
+    command: "/bin/true"
