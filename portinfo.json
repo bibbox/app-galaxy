@@ -2,91 +2,19 @@
   "mappings": [
                 {
       "id": "§§PORT1",
-      "url": "§§INSTANCE-p21",
+      "url": "§§INSTANCE-p80",
       "protocol": "HTTP",
       "proxy" : "PRIMARY"
     },
                  {
       "id": "§§PORT2",
+      "url": "§§INSTANCE-p21",
+      "protocol": "HTTP",
+      "proxy" : "PRIMARY"
+    },
+               {
+      "id": "§§PORT3",
       "url": "§§INSTANCE-p22",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT30",
-      "url": "§§INSTANCE-p30000",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT310",
-      "url": "§§INSTANCE-p300010",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT32",
-      "url": "§§INSTANCE-p30002",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT33",
-      "url": "§§INSTANCE-p30003",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT34",
-      "url": "§§INSTANCE-p30004",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT35",
-      "url": "§§INSTANCE-p30005",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT36",
-      "url": "§§INSTANCE-p30006",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT37",
-      "url": "§§INSTANCE-p30007",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT38",
-      "url": "§§INSTANCE-p30008",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT39",
-      "url": "§§INSTANCE-p30009",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT31",
-      "url": "§§INSTANCE-p3001",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },
-               {
-      "id": "§§PORT4",
-      "url": "§§INSTANCE",
-      "protocol": "HTTP",
-      "proxy" : "PRIMARY"
-    },               
-              {
-      "id": "§§PORT5",
-      "url": "§§INSTANCE-p9002",
       "protocol": "HTTP",
       "proxy" : "PRIMARY"
     }
