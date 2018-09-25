@@ -11,7 +11,7 @@ services:
     container_name: §§INSTANCE-galaxy
     restart: unless-stopped
     networks:
-      -bibbox-default-network
+      - bibbox-default-network
     environment:
 
       GALAXY_CONFIG_ADMIN_USERS: §§ADMIN_USERS
