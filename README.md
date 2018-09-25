@@ -5,18 +5,9 @@
 
 
 ## Docker Images Used
-
- * bibbox/galaxy-proftpd
- * bibbox/galaxy-postgres
- * bibbox/galaxy-slurm
- * bibbox/galaxy
- * bibbox/galaxy-galaksio
+ * bgruening/docker--galaxy-stable:18.05
  * busybox:latest
 
 ## Mounted Volumes
 
-- /var/lib/postgresql/data
-- /export/ftp
 - /export/
-- /local_tools
-- /usr/local/apache2/htdocs/server/conf/
