@@ -2,7 +2,7 @@
   "mappings": [
                 {
       "id": "§§PORT1",
-      "url": "§§INSTANCE-p80",
+      "url": "§§INSTANCE",
       "protocol": "HTTP",
       "proxy" : "PRIMARY"
     },
