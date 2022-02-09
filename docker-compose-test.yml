@@ -15,9 +15,6 @@ services:
     privileged: True
     ports:
       - 5555:5555
-    expose: 
-      - 22
-      - 21
     volumes: 
       - ./data/export:/export/:delegated
       - ./data/export/munge:/etc/munge
@@ -74,7 +71,7 @@ services:
       - GALAXY_OVERWRITE_CONFIG=true
       - GALAXY_DEPENDENCY_RESOLUTION=conda
       - GALAXY_JOB_RUNNER=local
-      - GALAXY_CONFIG_ADMIN_USERS=admin@bibbox.org
+      - GALAXY_CONFIG_ADMIN_USERS=admin@galaxy.org
       - GALAXY_CONFIG_DATABASE_CONNECTION=postgresql://galaxy:chaopagoosaequuashie@postgres/galaxy
       - GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL=${GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL:-http://localhost}
       - GALAXY_CONFIG_CONDA_AUTO_INSTALL=true
@@ -104,9 +101,7 @@ services:
     #build: bibbox-galaxy-nginx
     container_name: bibbox-galaxy-nginx
     ports:
-      - "8080:80"
-      - "8022:22"
-      - "8021:21"
+      - 8080:80
     volumes:
       - ./data/export/nginx:/config:ro
       - ./data/export/galaxy/static:/export/galaxy/static:ro
@@ -158,24 +153,3 @@ services:
 #      - /var/run/docker.sock:/var/run/docker.sock
 #    networks:
 #      - bibbox-default-network
-
-
-#services:
-#  bibbox-galaxy:
-#    image: bgruening/galaxy-stable:20.09
-#    container_name:  bibbox-galaxy
-#    restart: unless-stopped
-#    networks:
-#      - bibbox-default-network
-#    ports:
-#      - "8080:80"
-#      - "8021:21"
-#      - "8022:22"
-#    volumes: 
-#      - ./data/export:/export/ 
-#    environment:
-#      - GALAXY_DEFAULT_ADMIN_USER=admin
-#      - GALAXY_DEFAULT_ADMIN_EMAIL=admin@bibbox.org
-#      - GALAXY_DEFAULT_ADMIN_PASSWORD=password
-#      - GALAXY_DEFAULT_ADMIN_KEY=fakekey
-

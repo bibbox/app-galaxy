@@ -5,13 +5,13 @@ networks:
       external: true
 
 services:
-  bibbox-galaxy-server:
+  §§INSTANCE-galaxy-server:
     image: quay.io/bgruening/galaxy-server:20.09
-    container_name:  bibbox-galaxy-server
+    container_name:  §§INSTANCE-galaxy-server
     restart: unless-stopped
     networks:
       - bibbox-default-network
-    hostname: bibbox-galaxy-server
+    hostname: §§INSTANCE-galaxy-server
     privileged: True
     ports:
       - 5555:5555
@@ -24,21 +24,21 @@ services:
       - ./data/export/slurm_config:/etc/slurm-llnl
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - bibbox-galaxy-postgres
-      - bibbox-galaxy-rabbitmq
+      - §§INSTANCE-galaxy-postgres
+      - §§INSTANCE-galaxy-rabbitmq
     links:
-      - bibbox-galaxy-rabbitmq:rabbitmq
-      - bibbox-galaxy-postgres:postgres
+      - §§INSTANCE-galaxy-rabbitmq:rabbitmq
+      - §§INSTANCE-galaxy-postgres:postgres
 #    environment:
 #      - GALAXY_DEFAULT_ADMIN_USER=admin
 #      - GALAXY_DEFAULT_ADMIN_EMAIL=admin@galaxy.org
 #      - GALAXY_DEFAULT_ADMIN_PASSWORD=password
 #      - GALAXY_DEFAULT_ADMIN_KEY=fakekey
   # The database for Galaxy
-  bibbox-galaxy-postgres:
+  §§INSTANCE-galaxy-postgres:
     image: postgres:12
-    container_name: bibbox-galaxy-postgres
-    hostname: bibbox-galaxy-postgres
+    container_name: §§INSTANCE-galaxy-postgres
+    hostname: §§INSTANCE-galaxy-postgres
     environment:
       - POSTGRES_PASSWORD=chaopagoosaequuashie
       - POSTGRES_USER=galaxy
@@ -49,9 +49,9 @@ services:
       - bibbox-default-network
 
 # Message queue for better performance
-  bibbox-galaxy-rabbitmq:
+  §§INSTANCE-galaxy-rabbitmq:
     image: rabbitmq:3.9.13-alpine
-    container_name: bibbox-galaxy-rabbitmq
+    container_name: §§INSTANCE-galaxy-rabbitmq
     hostname: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=galaxy
@@ -64,17 +64,17 @@ services:
       
   # The galaxy-configurator is responsible for the whole configuration of
   # your setup and should be the central place of configuration.
-  bibbox-galaxy-configurator:
+  §§INSTANCE-galaxy-configurator:
     image: quay.io/bgruening/galaxy-configurator:20.09
     #build: galaxy-configurator
-    container_name: bibbox-galaxy-configurator
+    container_name: §§INSTANCE-galaxy-configurator
     environment:
       - EXPORT_DIR=./data/export
       - HOST_PWD=$PWD
       - GALAXY_OVERWRITE_CONFIG=true
       - GALAXY_DEPENDENCY_RESOLUTION=conda
       - GALAXY_JOB_RUNNER=local
-      - GALAXY_CONFIG_ADMIN_USERS=admin@bibbox.org
+      - GALAXY_CONFIG_ADMIN_USERS=${§§ADMIN_USERS:-admin@bibbox.org}
       - GALAXY_CONFIG_DATABASE_CONNECTION=postgresql://galaxy:chaopagoosaequuashie@postgres/galaxy
       - GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL=${GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL:-http://localhost}
       - GALAXY_CONFIG_CONDA_AUTO_INSTALL=true
@@ -99,10 +99,9 @@ services:
   # The proxy server. All web-traffic is going through here, so we can
   # offload static file serving
   # (https://docs.galaxyproject.org/en/master/admin/production.html#using-a-proxy-server)
-  bibbox-galaxy-nginx:
+  §§INSTANCE-galaxy-nginx:
     image: quay.io/bgruening/galaxy-nginx:20.09
-    #build: bibbox-galaxy-nginx
-    container_name: bibbox-galaxy-nginx
+    container_name: §§INSTANCE-galaxy-nginx
     ports:
       - "8080:80"
       - "8022:22"
@@ -112,58 +111,26 @@ services:
       - ./data/export/galaxy/static:/export/galaxy/static:ro
       - ./data/export/galaxy/config/plugins:/galaxy/config/plugins:ro
     links:
-      - bibbox-galaxy-server:galaxy-server
-      - bibbox-galaxy-rabbitmq:rabbitmq
-      - bibbox-galaxy-postgres:postgres
+      - §§INSTANCE-galaxy-server:galaxy-server
+      - §§INSTANCE-galaxy-rabbitmq:rabbitmq
+      - §§INSTANCE-galaxy-postgres:postgres
    
     depends_on:
-      - bibbox-galaxy-server
+      - §§INSTANCE-galaxy-server
     networks:
       - bibbox-default-network
-#  slurmctld:
-#    image: quay.io/bgruening/galaxy-slurm:20.09
-#    #build: galaxy-slurm
-#    container_name: bibbox-galaxy-slurmctld
-#    command: ["slurmctld"]
-#    hostname: slurmctld
-#    volumes:
-#      - ./data/export/slurm_config:/etc/slurm-llnl
-#      - ./data/export/munge:/etc/munge
-#    networks:
-#      - bibbox-default-network
-#  slurm_node_discovery:
-#    image: quay.io/bgruening/galaxy-slurm-node-discovery:20.09
-#    #build: galaxy-slurm-node-discovery
-#    container_name: bibbox-galaxy-slurm-node-discovery
-#    volumes:
-#      - ./data/export/slurm_config:/etc/slurm-llnl
-#      - /var/run/docker.sock:/var/run/docker.sock
-#  slurm_node:
-#    image: quay.io/bgruening/galaxy-slurm:20.09
-#    #build: galaxy-slurm
-#    #container_name: bibbox-galaxy-slurm-node
-#    command: ["slurmd"]
-#    privileged: true
-#    labels:
-#      slurm_node: true
-#    volumes:
-#      - ./data/export/galaxy/database:/galaxy/database
-#      - ./data/export/galaxy/tools:/galaxy/tools:ro
-#      - ./data/export/galaxy/lib/galaxy/tools:/galaxy/lib/galaxy/tools:ro
-#      - ./data/export/galaxy/tool-data:/galaxy/tool-data
-#      - ./data/export/galaxy/.venv:/galaxy/.venv
-#      - ./data/export/tool_deps:/tool_deps
-#      - ./data/export/slurm_config:/etc/slurm-llnl
-#      - ./data/export/munge:/etc/munge
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    networks:
-#      - bibbox-default-network
 
 
+#version: '3'
+#
+#networks:
+#    bibbox-default-network:
+#      external: true
+#
 #services:
-#  bibbox-galaxy:
+#  §§INSTANCE-galaxy:
 #    image: bgruening/galaxy-stable:20.09
-#    container_name:  bibbox-galaxy
+#    container_name:  §§INSTANCE-galaxy
 #    restart: unless-stopped
 #    networks:
 #      - bibbox-default-network
@@ -174,8 +141,15 @@ services:
 #    volumes: 
 #      - ./data/export:/export/ 
 #    environment:
-#      - GALAXY_DEFAULT_ADMIN_USER=admin
-#      - GALAXY_DEFAULT_ADMIN_EMAIL=admin@bibbox.org
-#      - GALAXY_DEFAULT_ADMIN_PASSWORD=password
-#      - GALAXY_DEFAULT_ADMIN_KEY=fakekey
-
+#      - GALAXY_DEFAULT_ADMIN_USER=§§ADMIN_USERS
+#      - GALAXY_DEFAULT_ADMIN_EMAIL=§§ADMIN_EMAIL
+#      - GALAXY_DEFAULT_ADMIN_PASSWORD=§§ADMIN_PASSWORD
+#      - GALAXY_DEFAULT_ADMIN_KEY=§§ADMIN_APIKEY
+#
+#    proxy:
+#     TYPE: PRIMARY
+#     URLPREFIX: §§INSTANCE
+#     TEMPLATE: default
+#     DISPLAYNAME: 'Galaxy'  
+#
+## MAYBE Extend usability: https://github.com/bgruening/docker-galaxy-stable/blob/master/compose/docker-compose.yml

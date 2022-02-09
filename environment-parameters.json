@@ -1,56 +1,11 @@
 [
   {
     "id": "ADMIN_USERS",
-    "display_name": "List admin users",
+    "display_name": "Admin user",
     "type": "text",
-    "default_value": "admin@galaxy.org",
-    "description": "List e-mail adresses of accounts which should have admin rights (NOTE: register the users immediately after creating the Galaxy instance as anyone who registers with that e-mail adress gets admin rights).",
-    "min_length": "1",
+    "default_value": "admin",
+    "description": "Username of account that should have admin rights (NOTE: register the users immediately after creating the Galaxy instance as anyone who registers with that e-mail adress gets admin rights).",
+    "min_length": "0",
     "max_length": "255"
-  },
-  {
-    "id": "API_KEY",
-    "display_name": "API Key",
-    "type": "text",
-    "default_value": "changethiskeyonprodictionenvironments",
-    "description": "Key for access to the API",
-    "min_length": "1",
-    "max_length": "255"
-  },
-  {
-    "id": "MY_GALAXY",
-    "display_name": "Name",
-    "type": "text",
-    "default_value": "A Galaxy server",
-    "description": "Name to display for the Galaxy instance",
-    "min_length": "1",
-    "max_length": "255"
-  },
-  {
-    "id": "ENABLE_TTS_INSTALL",
-    "display_name": "Enable Test Tool Shed",
-    "type": "text",
-    "default_value": "True",
-    "description": "Should the Galaxy Test Tool Shed by enabled (set to True or False).",
-    "min_length": "4",
-    "max_length": "5"
-  },
-  {
-    "id": "UWSGI_THREADS",
-    "display_name": "Number of uWSGI threads",
-    "type": "number",
-    "default_value": "4",
-    "description": "The number of uWSGI threads that will be used",
-    "min_length": "1",
-    "max_length": "4",
-  },
-  {
-    "id": "UWSGI_PROCESSES",
-    "display_name": "Number of uWSGI processes",
-    "type": "number",
-    "default_value": "2",
-    "description": "The number of uWSGI processes that will be started",
-    "min_length": "1",
-    "max_length": "4"
   }
 ]
