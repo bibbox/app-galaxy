@@ -2,8 +2,8 @@
   {
     "id": "ADMIN_USERS",
     "display_name": "Admin user",
-    "type": "text",
-    "default_value": "admin",
+    "type": "email",
+    "default_value": "admin@bibbox.org",
     "description": "Username of account that should have admin rights (NOTE: register the users immediately after creating the Galaxy instance as anyone who registers with that e-mail adress gets admin rights).",
     "min_length": "0",
     "max_length": "255"
