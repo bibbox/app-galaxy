@@ -15,9 +15,6 @@ services:
     privileged: True
     ports:
       - 5555:5555
-    expose: 
-      - 22
-      - 21
     volumes: 
       - ./data/export:/export/:delegated
       - ./data/export/munge:/etc/munge

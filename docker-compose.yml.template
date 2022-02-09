@@ -15,9 +15,6 @@ services:
     privileged: True
     ports:
       - 5555:5555
-    expose: 
-      - 22
-      - 21
     volumes: 
       - ./data/export:/export/:delegated
       - ./data/export/munge:/etc/munge
@@ -103,9 +100,7 @@ services:
     image: quay.io/bgruening/galaxy-nginx:20.09
     container_name: §§INSTANCE-galaxy-nginx
     ports:
-      - "8080:80"
-      - "8022:22"
-      - "8021:21"
+      - 8080:80
     volumes:
       - ./data/export/nginx:/config:ro
       - ./data/export/galaxy/static:/export/galaxy/static:ro
@@ -119,6 +114,11 @@ services:
       - §§INSTANCE-galaxy-server
     networks:
       - bibbox-default-network
+    proxy:
+     TYPE: PRIMARY
+     URLPREFIX: §§INSTANCE
+     TEMPLATE: default
+     DISPLAYNAME: 'Galaxy'  
 
 
 #version: '3'
