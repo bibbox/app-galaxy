@@ -102,8 +102,6 @@ services:
     container_name: bibbox-galaxy-nginx
     ports:
       - "8080:80"
-      - "8022:22"
-      - "8021:21"
     volumes:
       - ./data/export/nginx:/config:ro
       - ./data/export/galaxy/static:/export/galaxy/static:ro
