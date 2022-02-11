@@ -1,4 +1,7 @@
 .idea
 .idea/*
 
+docker-compose-test.yml
+test_stuff
+
 data/export
