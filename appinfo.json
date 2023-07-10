@@ -1,11 +1,11 @@
 {
-	"name": "Galaxy",
+	"name": "Galaxy_v20.09",
 	"short_name": "Galaxy",
 	"version": "20.09",
-	"description": "",
-        "short_description": "",
+	"description": "Galaxy is an open-source platform for FAIR data analysis",
+        "short_description": "Application for FAIR data analysis",
 	"catalogue_url": "https://bio.tools/tool/Galaxy/version/none",
 	"application_url": "https://galaxyproject.org",
-	"tags": ["Galaxy"],
+	"tags": ["Galaxy"],["FAIR data"]
 	"application_documentation_url": "https://readthedocs.org/projects/galaxy/"
 }
