@@ -7,5 +7,5 @@
 	"catalogue_url": "https://bio.tools/tool/Galaxy/version/none",
 	"application_url": "https://galaxyproject.org",
 	"tags": ["Galaxy"],
-	"application_documentation_url": "https://galaxyproject.org"
+	"application_documentation_url": "https://readthedocs.org/projects/galaxy/"
 }
