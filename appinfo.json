@@ -3,7 +3,7 @@
 	"short_name": "Galaxy",
 	"version": "18.05",
 	"description": "Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.",
-        "short_description": "App for accessible, reproducible, transparent computational biomedical research",
+  "short_description": "App for accessible, reproducible, transparent computational biomedical research",
 	"catalogue_url": "https://bio.tools/tool/Galaxy/version/none",
 	"application_url": "https://galaxyproject.org",
 	"tags": ["Galaxy"],
