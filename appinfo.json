@@ -6,6 +6,6 @@
         "short_description": "Application for FAIR data analysis",
 	"catalogue_url": "https://bio.tools/tool/Galaxy/version/none",
 	"application_url": "https://galaxyproject.org",
-	"tags": ["Galaxy", "FAIR data"]
+	"tags": ["Galaxy", "FAIR data"],
 	"application_documentation_url": "https://readthedocs.org/projects/galaxy/"
 }
