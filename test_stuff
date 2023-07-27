@@ -1,0 +1,240 @@
+version: '3'
+
+networks:
+    bibbox-default-network:
+      external: true
+
+services:
+  bibbox-galaxy:
+    image: bgruening/galaxy-server:20.09
+    container_name:  bibbox-galaxy
+    restart: unless-stopped
+    networks:
+      - bibbox-default-network
+    ports:
+      - "8080:80"
+      - "8021:21"
+      - "8022:22"
+    volumes: 
+      - ./data/export:/export/ 
+      - ./data/export/munge:/etc/munge
+      - ./data/export/slurm_config:/etc/slurm-llnl
+      - /var/run/docker.sock:/var/run/docker.sock
+#    depends_on:
+#      - bibbox-postgres
+#      - bibbox-rabbitmq
+
+    environment:
+      - GALAXY_DEFAULT_ADMIN_USER=admin
+      - GALAXY_DEFAULT_ADMIN_EMAIL=admin@bibbox.org
+      - GALAXY_DEFAULT_ADMIN_PASSWORD=password
+      - GALAXY_DEFAULT_ADMIN_KEY=fakekey
+  # The galaxy-configurator is responsible for the whole configuration of
+  # your setup and should be the central place of configuration.
+  bibbox-galaxy-configurator:
+    image: quay.io/bgruening/galaxy-configurator:20.09
+    container_name:  bibbox-galaxy-configurator
+    #build: galaxy-configurator
+    environment:
+      - EXPORT_DIR=./data/export
+      - HOST_PWD=$PWD
+      - GALAXY_OVERWRITE_CONFIG=true
+      - GALAXY_DEPENDENCY_RESOLUTION=conda
+#      - GALAXY_JOB_RUNNER=local
+      - GALAXY_CONFIG_ADMIN_USERS=admin@galaxy.org
+      - GALAXY_CONFIG_DATABASE_CONNECTION=postgresql://galaxy:chaopagoosaequuashie@postgres/galaxy
+      - GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL=${GALAXY_CONFIG_GALAXY_INFRASTRUCTURE_URL:-http://localhost}
+      - GALAXY_CONFIG_CONDA_AUTO_INSTALL=true
+      - GALAXY_CONFIG_AMQP_INTERNAL_CONNECTION=amqp://galaxy:vaiJa3ieghai2ief0jao@rabbitmq/galaxy
+      - GALAXY_PROXY_PREFIX=${GALAXY_PROXY_PREFIX:-}
+      - GALAXY_CONFIG_CLEANUP_JOB=onsuccess
+      - GALAXY_JOB_RUNNER=slurm
+      - SLURM_OVERWRITE_CONFIG=true
+      - SLURM_NODE_COUNT=${SLURM_NODE_COUNT:-1}
+      - SLURM_NODE_HOSTNAME=compose_slurm_node
+    volumes:
+      - ./data/export/galaxy/config:/galaxy/config
+      - ./data/base_config.yml:/base_config.yml
+      - ./data/galaxy-configurator/templates:/templates
+  # The database for Galaxy
+  bibbox-postgres:
+    image: postgres:12
+    container_name:  bibbox-postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_PASSWORD=chaopagoosaequuashie
+      - POSTGRES_USER=galaxy
+      - POSTGRES_DB=galaxy
+    volumes:
+      - ./data/export/postgres/:/var/lib/postgresql/data:delegated
+    networks:
+      - bibbox-default-network
+  bibbox-rabbitmq:
+    image: rabbitmq:alpine
+    container_name: bibbox-galaxy-rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=galaxy
+      - RABBITMQ_DEFAULT_PASS=vaiJa3ieghai2ief0jao
+      - RABBITMQ_DEFAULT_VHOST=galaxy
+    volumes:
+      - ./data/export/rabbitmq:/var/lib/rabbitmq:delegated
+    networks:
+      - bibbox-default-network
+
+#  galaxy-server:
+#    volumes:
+#      - ./data/export/munge:/etc/munge
+#      - ./data/export/slurm_config:/etc/slurm-llnl
+  bibbox-slurmctld:
+    image: quay.io/bgruening/galaxy-slurm:20.09
+    #build: galaxy-slurm
+    command: ["slurmctld"]
+    hostname: bibbox-slurmctld
+    volumes:
+      - ./data/export/slurm_config:/etc/slurm-llnl
+      - ./data/export/munge:/etc/munge
+    networks:
+      - bibbox-default-network
+  slurm_node_discovery:
+    image: quay.io/bgruening/galaxy-slurm-node-discovery:20.09
+    #build: galaxy-slurm-node-discovery
+    volumes:
+      - ./data/export/slurm_config:/etc/slurm-llnl
+      - /var/run/docker.sock:/var/run/docker.sock
+  bibbox-slurm_node:
+    image: quay.io/bgruening/galaxy-slurm:20.09
+    #build: galaxy-slurm
+    command: ["slurmd"]
+    privileged: true
+    labels:
+      slurm_node: true
+    volumes:
+      - ./data/export/galaxy/database:/galaxy/database
+      - ./data/export/galaxy/tools:/galaxy/tools:ro
+      - ./data/export/galaxy/lib/galaxy/tools:/galaxy/lib/galaxy/tools:ro
+      - ./data/export/galaxy/tool-data:/galaxy/tool-data
+      - ./data/export/galaxy/.venv:/galaxy/.venv
+      - ./data/export/tool_deps:/tool_deps
+      - ./data/export/slurm_config:/etc/slurm-llnl
+      - ./data/export/munge:/etc/munge
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - bibbox-default-network
+      
+
+
+
+
+#services:
+#  # proftpd container
+#  §§INSTANCE-proftpd:
+##    build: proftpd
+#    image: quay.io/galaxy/proftpd:compose
+#    environment:
+#        - proftpd_db_connection=galaxy@db
+#        - proftpd_db_username=galaxy
+#        - proftpd_db_password=chaopagoosaequuashie
+#        - proftpd_files_dir=/export/ftp
+#        - proftpd_use_sftp=True
+#        - proftpd_passive_port_low=30000
+#        - proftpd_passive_port_high=30010
+#    container_name: §§INSTANCE-galaxy-proftpd
+#    volumes:
+#        - ./ftp_data:/export/ftp
+#    expose:
+#        - 21
+#        - 22
+#    ports:
+#        - "§§PORT1:21"
+#        - "§§PORT2:22"
+#        - "§§PORT3-0:30000"
+#        - "§§PORT3-1:30001"
+#        - "§§PORT3-2:30002"
+#        - "§§PORT3-3:30003"
+#        - "§§PORT3-4:30004"
+#        - "§§PORT3-5:30005"
+#        - "§§PORT3-6:30006"
+#        - "§§PORT3-7:30007"
+ #       - "§§PORT3-8:30008"
+ #       - "§§PORT3-9:30009"
+#        - "§§PORT3-10:30010"
+#    links:
+#        - §§INSTANCE-postgres:db
+#    restart: unless-stopped
+#    networks:
+#      - bibbox-default-network
+#    hostname: §§INSTANCE-galaxy-proftpd
+#
+#  §§INSTANCE-postgres:
+## Using the official postgres image. This needs to be populated by calling
+##  docker-compose run galaxy install_db.sh
+## on first run
+##    image: postgres
+## This comes with an initialization to quickly populate the database on first start
+##    build: postgres-galaxy
+#    image: quay.io/galaxy/postgres:compose
+#    container_name: §§INSTANCE-galaxy-postgres
+#    environment:
+#        - POSTGRES_PASSWORD=chaopagoosaequuashie
+#        - POSTGRES_USER=galaxy
+#        - POSTGRES_DB=galaxy
+#    volumes:
+#        - ./postgres-storage:/var/lib/postgresql/data
+#    hostname: §§INSTANCE-galaxy-postgres
+#    restart: unless-stopped
+#    networks:
+#      - bibbox-default-network
+
+  # slurm container
+#  §§INSTANCE-slurm:
+##    build: slurm-galaxy
+#    image: quay.io/galaxy/slurm:compose
+#    environment: {}
+#    container_name: §§INSTANCE-galaxy-slurm
+#    volumes:
+#        - ./galaxy-storage/:/export
+#    restart: unless-stopped
+#    networks:
+#      - bibbox-default-network
+#    hostname: §§INSTANCE-galaxy-slurm
+#
+#  # Main Galaxy container
+#  §§INSTANCE-galaxy:
+##    build: ../galaxy
+#    image: quay.io/bgruening/galaxy:18.05
+#    environment:
+#        #    Insert here your environment variables to change Galaxy's behaviour.
+#        #    For example to personalise Galaxy by changing the branding with
+#        #    - GALAXY_CONFIG_BRAND=FOO
+#        - GALAXY_CONFIG_BRAND=BaseGalaxy
+#        - NONUSE=proftp,postgres,slurmd,slurmctld
+#        - GALAXY_CONFIG_FTP_UPLOAD_DIR=/export/ftp
+#        - GALAXY_CONFIG_ALLOW_USER_DATASET_PURGE=True
+#        - GALAXY_CONFIG_ALLOW_LIBRARY_PATH_PASTE=True
+#        - GALAXY_CONFIG_ENABLE_USER_DELETION=True
+#        - GALAXY_CONFIG_ENABLE_BETA_WORKFLOW_MODULES=True
+#        - GALAXY_CONFIG_DATABASE_CONNECTION=postgresql://galaxy:chaopagoosaequuashie@db/galaxy?client_encoding=utf8
+#        - GALAXY_DEFAULT_ADMIN_USER=admin@galaxy.org
+#        - GALAXY_DEFAULT_ADMIN_PASSWORD=admin
+#        - GALAXY_DEFAULT_ADMIN_KEY=admin
+#    ports:
+#        - "§§PORT4:80" # nginx
+#        - "§§PORT5:9002" # supervisor web-interface - not super useful in compose mode
+#    links:
+#        - §§INSTANCE-postgres:db
+#        - §§INSTANCE-slurm
+#    container_name: §§INSTANCE-galaxy
+#    volumes:
+#        - ./ftp_data:/export/ftp
+#        # This is the directory where all your files from Galaxy will be stored
+#        # on your host system
+#        - ./galaxy-storage/:/export/
+#    hostname: §§INSTANCE-galaxy
+#    privileged: True
+#    restart: unless-stopped
+#    networks:
+#      - bibbox-default-network
+
+#volumes:
+#  ftp_data: {}
