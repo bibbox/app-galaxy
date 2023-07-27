@@ -1,11 +1,9 @@
 {
 	"name": "Galaxy_v20.09",
 	"short_name": "Galaxy",
-	"version": "20.09",
-	"description": "Galaxy is an open-source platform for FAIR data analysis",
-        "short_description": "Application for FAIR data analysis",
-	"catalogue_url": "https://bio.tools/tool/Galaxy/version/none",
-	"application_url": "https://galaxyproject.org",
+  "version": "20.09",
+	"description": "Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.",
+  "short_description": "App for accessible, reproducible, transparent computational biomedical research",
 	"tags": ["Galaxy", "FAIR data"],
-	"application_documentation_url": "https://readthedocs.org/projects/galaxy/"
+	"application_documentation_url": "https://docs.galaxyproject.org/en/master/"
 }
