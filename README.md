@@ -1,6 +1,6 @@
 # Galaxy BIBBOX application
 
-Bibbox compatible version of [Galaxy docker](https://github.com/bgruening/docker-galaxy-stable).
+Bibbox compatible version of [Galaxy docker](https://github.com/anvilproject/galaxy).
 
 ## Hints
 * approx. time with medium fast internet connection: **15 minutes**
@@ -15,10 +15,7 @@ Within BIBBOX you can use the [BIBBOX](https://bibbox.readthedocs.io/en/latest/ 
 You can set the admin username. After the installation is completed you should immediately register a new user with your chosen admin username. This user will automatcally be the admin user. NOTE: Anyone can register an adminuser if they know the admin username right after the installation. 
 
 ## Docker Images Used
- * quay.io/bgruening/galaxy-server:20.09
- * postgres:12
- * rabbitmq:3.9.13-alpine
- * quay.io/bgruening/galaxy-nginx:20.09
+ * galaxy/galaxy-anvil
 
 ## Standalone Installation
 
@@ -36,17 +33,7 @@ To install the app locally execute the commands:
 
 
 ## Mounted Volumes
- * ./data/export
- * ./data/export/munge
- * ./data/export/postgres
- * ./data/export/rabbitmq
- * ./data/export/galaxy/config
- * ./data/export/nginx
- * ./data/base_config.yml
- * ./data/galaxy-configurator/templates
- * ./data/export/galaxy/static
- * ./data/export/galaxy/config/plugins
+ * ./data/database
 
 ## TODOS
- * Enable SLURM
  * Enable FTP/SFTP connection
