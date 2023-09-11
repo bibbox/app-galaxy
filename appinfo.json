@@ -1,7 +1,7 @@
 {
-	"name": "Galaxy_v20.09",
+	"name": "Galaxy Anvil",
 	"short_name": "Galaxy",
-  "version": "20.09",
+  "version": "23.0",
 	"description": "Galaxy is an open, web-based platform for accessible, reproducible, and transparent computational biomedical research.",
   "short_description": "App for accessible, reproducible, transparent computational biomedical research",
 	"tags": ["Galaxy", "FAIR data"],
