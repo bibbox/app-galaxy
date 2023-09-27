@@ -1,39 +1,39 @@
-# Galaxy BIBBOX application
+# galaxy BIBBOX application
 
-Bibbox compatible version of [Galaxy docker](https://github.com/anvilproject/galaxy).
+This container can be installed as [BIBBOX APP](https://bibbox.readthedocs.io/en/latest/ "BIBBOX App Store") or standalone. 
 
-## Hints
-* approx. time with medium fast internet connection: **15 minutes**
+- after the docker installation follow these [instructions](INSTALL-APP.md)
+
+## Standalone Installation 
+
+Clone the github repository. If necessary change the ports in the environment file `.env` and the volume mounts in `docker-compose.yml`.
+
+```
+git clone https://github.com/bibbox/app-galaxy
+cd app-galaxy
+docker-compose up -d
+```
+
+The main app can be opened and set up at
+```
+http://localhost:8080
+```
 
 ## Install within BIBBOX
 
-Within BIBBOX you can use the [BIBBOX](https://bibbox.readthedocs.io/en/latest/ "BIBBOX") to install a lot of software tools. After the installation is finished you can start your application in the dashboard.
+Visit the BIBBOX page and find the App by its name in the Store. Click on the symbol and select Install. Then fill the parameters below and name your app click install again.
 
-### Install Environment Variables
+## Docker Images used
+  - [galaxy/galaxy-anvil](https://hub.docker.com/r/galaxy/galaxy-anvil) 
 
- * ADMIN_USERS = admin username\
-You can set the admin username. After the installation is completed you should immediately register a new user with your chosen admin username. This user will automatcally be the admin user. NOTE: Anyone can register an adminuser if they know the admin username right after the installation. 
 
-## Docker Images Used
- * galaxy/galaxy-anvil
-
-## Standalone Installation
-
-To install the app locally execute the commands:
-* Clone the git repository: 
-  * `git clone https://github.com/bibbox/app-galaxy.git`
-* Change the current directory to app-molgenis: 
-  * `cd app-galaxy/` 
-* Create the docker network `bibbox-default-network`: 
-  * `docker network create bibbox-default-network`
-* Run **docker-compose up** in the root folder of the project: 
-  * `docker-compose up -d`
-* **Alternatively** on a *Linux* system run the bash script `intsall.sh` after cloning and change the working directory to the git repository directory.
  
+## Install Environment Variables
 
+  
+The default values for the standalone installation are:
 
+  
 ## Mounted Volumes
- * ./data/database
-
-## TODOS
- * Enable FTP/SFTP connection
+### galaxy/galaxy-anvil Conatiner
+  - *./data/database:/galaxy/server/database*
