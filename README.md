@@ -36,6 +36,6 @@ The default values for the standalone installation are:
 
   
 ## Mounted Volumes
-### galaxy/galaxy-anvil Conatiner
+### galaxy/galaxy-anvil Container
   - *./data/database:/galaxy/server/database*
 
