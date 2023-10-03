@@ -11,6 +11,7 @@ Clone the github repository. If necessary change the ports in the environment fi
 ```
 git clone https://github.com/bibbox/app-galaxy
 cd app-galaxy
+chmod 777 data/database/
 docker network create bibbox-default-network
 docker-compose up -d
 ```
