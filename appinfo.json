@@ -7,5 +7,5 @@
 	"tags": ["Galaxy", "FAIR data"],
 	"application_url": "https://galaxyproject.org",
 	"application_documentation_url": "https://docs.galaxyproject.org/en/master/",
-	"instance_information": "work in progress"
+	"instance_information": "<p>Galaxy is an open-source platform for FAIR data analysis that enables users to Use tools from various domains, run code in interactive environments, ensure reproducibility and manage data by sharing and publishing results</p>"
 }
